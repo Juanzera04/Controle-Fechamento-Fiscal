@@ -1,0 +1,626 @@
+/* ================================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
+
+body {
+    background: #f4f6fa;
+    padding: 24px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    flex: 1;
+}
+
+/* ================================================
+   CORES PRINCIPAIS (Variáveis)
+   ================================================ */
+:root {
+    --primary-dark: #144274;
+    --primary-medium: #215C98;
+    --primary-light: #eef3fc;
+    --danger: #FF3F3F;
+    --danger-gradient: linear-gradient(90deg, #FF3F3F 80%, #ffffff 100%);
+    --success: #8ED973;
+    --success-gradient: linear-gradient(90deg, #8ED973 80%, #ffffff 100%);
+    --border-light: #000000;
+    --border-medium: #000000;
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --text-light: #94a3b8;
+    --hover-bg: red;
+    --page-bg: #f4f6fa;
+}
+
+/* ================================================
+   CABEÇALHO E FRAME SUPERIOR
+   ================================================ */
+.top-frame {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 28px;
+    overflow: hidden;
+    border: 1px solid #000000;
+}
+
+.page-title {
+    background: var(--primary-dark);
+    padding: 14px 28px;
+    text-align: center;
+    border-bottom: 1px solid #000000;
+}
+
+.page-title h1 {
+    color: white;
+    font-size: 1.35em;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.filter-section {
+    padding: 18px 24px;
+    background: white;
+}
+
+.filter-label {
+    font-size: 0.8em;
+    color: var(--text-gray);
+    margin-bottom: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.unidades-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-unidade {
+    padding: 8px 20px;
+    border: 1px solid #000000;
+    background: white;
+    color: var(--text-gray);
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-unidade:hover {
+    background: var(--primary-light);
+    border-color: #000000;
+    color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-unidade.active {
+    background: var(--primary-dark);
+    color: white;
+    border-color: #000000;
+    box-shadow: 0 2px 4px rgba(21,61,100,0.2);
+}
+
+/* ================================================
+   QUADROS (Cards)
+   ================================================ */
+.tributacao-section {
+    background: rgb(245, 5, 5);
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    overflow: hidden;
+    border: 1px solid #000000;
+}
+
+/* TÍTULO DO QUADRO - AZUL NO FUNDO BRANCO */
+.section-header {
+    padding: 16px 20px 8px 20px;
+    background: white;
+    border-bottom: 1px solid #000000;
+}
+
+.section-header h2 {
+    color: var(--primary-dark);
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+/* SCROLL HORIZONTAL */
+.scroll-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-medium) var(--primary-light);
+}
+
+.scroll-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-track {
+    background: var(--primary-light);
+    border-radius: 10px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 10px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-medium);
+}
+
+/* ================================================
+   TABELA PRINCIPAL - BORDAS PRETAS
+   ================================================ */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+    font-size: 0.85em;
+    background: white;
+}
+
+/* CABEÇALHO DA DATA - COR #153D64 */
+.dashboard-table th {
+    background: var(--primary-dark) !important;
+    color: white !important;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 0.95em;
+    border: 1px solid #000000;
+    letter-spacing: 0.3px;
+}
+
+.dashboard-table th:first-child {
+    text-align: left;
+    background: var(--primary-dark) !important;
+    position: sticky;
+    left: 0;
+    z-index: 10;
+}
+
+/* CÉLULAS COM BORDAS PRETAS */
+.dashboard-table td {
+    padding: 10px 16px;
+    text-align: right;
+    border: 1px solid #000000;
+    white-space: nowrap;
+    vertical-align: middle;
+    transition: background 0.15s ease;
+}
+
+.dashboard-table td:first-child {
+    text-align: left;
+    font-weight: 500;
+    background: white;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    border: 1px solid #000000;
+}
+
+/* Hover suave nas linhas */
+.dashboard-table tr:hover td {
+    background: #e8eff8;
+}
+
+/* ================================================
+   LINHA TOTAL - COR #215C98 COM FONTE BRANCA
+   ================================================ */
+.linha-total td {
+    background: var(--primary-medium) !important;
+    font-weight: 600 !important;
+    color: white !important;
+    border: 1px solid #000000 !important;
+}
+
+.linha-total td:first-child {
+    background: var(--primary-medium) !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.linha-total:hover td {
+    background: #144274 !important;
+}
+
+.linha-total .clickable {
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.linha-total .clickable:hover {
+    background: transparent !important;
+}
+
+/* ================================================
+   LINHA TRIBUTAÇÃO - COR #215C98 COM FONTE BRANCA
+   ================================================ */
+.linha-tributacao td {
+    background: var(--primary-medium) !important;
+    font-weight: 600 !important;
+    color: white !important;
+    border: 1px solid #000000 !important;
+}
+
+.linha-tributacao td:first-child {
+    background: var(--primary-medium) !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.linha-tributacao:hover td {
+    background: #144274 !important;
+}
+
+.linha-tributacao .clickable {
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.linha-tributacao .clickable:hover {
+    background: transparent !important;
+}
+
+/* ================================================
+   LINHAS DE PERCENTUAL - NEGRITO
+   ================================================ */
+.dashboard-table tr:has(.percent-wrapper) .percent-value {
+    font-weight: 700 !important;
+}
+
+/* ================================================
+   CLICÁVEIS
+   ================================================ */
+.clickable {
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.clickable:hover {
+    color: var(--primary-dark) !important;
+}
+
+/* ================================================
+   BARRAS DE PERCENTUAL
+   ================================================ */
+.percent-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+}
+
+.percent-value {
+    position: relative;
+    z-index: 2;
+    font-weight: 700;
+    font-size: 0.85em;
+    color: var(--text-dark);
+}
+
+.percent-bar-bg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: var(--bar-width, 0%);
+    height: 6px;
+    z-index: 1;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Gradiente Vermelho #FF3F3F 80% para branco */
+.bar-danger {
+    background: linear-gradient(90deg, #FF3F3F 80%, #eea9a9 100%);
+}
+
+/* Gradiente Verde #8ED973 80% para branco */
+.bar-success {
+    background: linear-gradient(90deg, #8ED973 80%, #c2f3b0 100%);
+}
+
+/* Esconde a borda da célula de percentual para a barra ficar contínua */
+.dashboard-table td:has(.percent-wrapper) {
+    padding: 0px 2px 0px 2px!important;
+    position: relative;
+}
+
+.percent-wrapper {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 40px;
+}
+
+/* ================================================
+   🔥 LINHA SEPARADORA - COR DO FUNDO DA PÁGINA
+   ================================================ */
+.separator-row td {
+    background: var(--page-bg) !important;
+    border: none !important;
+    height: 12px;
+    padding: 0 !important;
+}
+
+.separator-row td:first-child {
+    background: var(--page-bg) !important;
+    border: none !important;
+}
+
+/* ================================================
+   VARIAÇÃO (seta verde)
+   ================================================ */
+.variation {
+    color: #7ce756;
+    font-weight: 700;
+    margin-right: 5px;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* ================================================
+   MODAL
+   ================================================ */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background: white;
+    margin: 50px auto;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 85vh;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.25s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    border: 1px solid #000000;
+}
+
+.modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--primary-dark);
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.close-modal {
+    font-size: 28px;
+    font-weight: 400;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.close-modal:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #000000;
+}
+
+#modalTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.7em;
+}
+
+#modalTable th {
+    background: #f8fafc;
+    color: #000000;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 800;
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;
+    font-size: 0.9em;
+}
+
+#modalTable th:last-child {
+    border-right: none;
+}
+
+#modalTable td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;
+    color: #1e293b;
+}
+
+#modalTable td:last-child {
+    border-right: none;
+}
+
+#modalTable tbody tr:hover td {
+    background: var(--primary-light);
+}
+
+/* ================================================
+   RODAPÉ
+   ================================================ */
+.footer {
+    margin-top: 32px;
+    padding: 14px 24px;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.75em;
+    color: var(--text-light);
+    border: 1px solid #000000;
+}
+
+.status-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ================================================
+   ANIMAÇÕES
+   ================================================ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+    
+    .page-title h1 {
+        font-size: 1.1em;
+    }
+    
+    .unidades-buttons {
+        gap: 8px;
+    }
+    
+    .btn-unidade {
+        padding: 6px 14px;
+        font-size: 0.75em;
+    }
+    
+    .dashboard-table {
+        font-size: 0.75em;
+    }
+    
+    .dashboard-table td,
+    .dashboard-table th {
+        padding: 8px 12px;
+    }
+    
+    .section-header {
+        padding: 12px 16px 6px 16px;
+    }
+    
+    .section-header h2 {
+        font-size: 1em;
+    }
+}
+
+/* ================================================
+   MODAL - BARRA DE PESQUISA E BOTÃO EXPORTAR
+   ================================================ */
+.modal-search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    font-size: 0.85em;
+    outline: none;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.search-input:focus {
+    border-color: var(--primary-medium);
+    box-shadow: 0 0 0 2px rgba(33,92,152,0.1);
+}
+
+.export-btn {
+    padding: 10px 20px;
+    background: var(--primary-medium);
+    color: white;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.export-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* Destaque para linhas filtradas */
+.modal-table-row {
+    transition: background 0.15s ease;
+}
+
+.modal-table-row.hidden {
+    display: none;
+}
