@@ -33,7 +33,7 @@ let currentContexto = '';
 function getDiasUteisAbril2026() {
     const dias = [];
     for (let i = 1; i <= 30; i++) {
-        const d = new Date(2026, 3, i);
+        const d = new Date(2026, 4, i);
         if (d.getDay() !== 0 && d.getDay() !== 6) dias.push(d);
     }
     return dias;
@@ -128,11 +128,18 @@ function normalizar(dados) {
             else if (key.includes('unidade')) n.Unidade = r[k];
             else if (key.includes('departamento')) n.Departamento = r[k];
             else if (key.includes('titulo')) n.Titulo = r[k];
+            else if (key.includes('tarefa')) n.Tarefa = r[k];
             else if (key.includes('usuarioresponsavel')) n.UsuarioResponsavel = r[k];
             else if (key.includes('grupo')) n.Grupo = r[k];
             else if (key.includes('codcliente')) n.CodCliente = r[k];
             else if (key.includes('razaosocial')) n.Cliente = r[k];
-        });
+            else if (key.includes('data comentário operação')) n.DataComentarioOperacao = r[k];
+            else if (key.includes('ação gerente')) n.AcaoGerente = r[k];
+            else if (key.includes('data comentário gerência')) n.DataComentarioGerencia = r[k];
+            else if (key.includes('statussysanalise')) n.StatusSysAnalise = r[k];
+            else if (key.includes('icmsliberado')) n.IcmsLiberado = r[k];
+            else if (key.includes('coordenacao')) n.Coordenacao = r[k];
+                    });
 
         return n;
     });
@@ -274,7 +281,6 @@ function renderModalTable(dataList) {
         tr.innerHTML = `
             <td>${r.CodCliente || '-'}</td>
             <td>${r.Cliente || '-'}</td>
-            <td>${r.Unidade || '-'}</td>
             <td>${r.Tributacao || '-'}</td>
             <td>${r.Titulo || '-'}</td>
             <td>${r.UsuarioResponsavel || '-'}</td>
@@ -329,9 +335,9 @@ function abrirModal(base, data, contexto = '', tipoFiltro = 'all') {
     // Atualiza título do modal baseado no filtro
     const modalTitle = document.querySelector('#modal .modal-header h2');
     if (modalTitle) {
-        let titleText = '📋 Detalhe das Pendências';
+        let titleText = 'Detalhe das Pendências';
         if (tipoFiltro === 'doc') titleText = 'Pendências de Documentação';
-        if (tipoFiltro === 'op') titleText = 'Pendências de Operação';
+        if (tipoFiltro === 'op') titleText = 'Pendências da Operação';
         modalTitle.textContent = titleText;
     }
     
@@ -391,16 +397,20 @@ function exportToExcel() {
     }
     
     const exportData = currentModalData.map(r => ({
-        'ID Cliente': r.CodCliente || '-',
+        'ID': r.CodCliente || '-',
         'Cliente': r.Cliente || '-',
         'Grupo': r.Grupo || '-',
         'Gerente': r.Gerente || '-',
         'Tributação': r.Tributacao || '-',
-        'Equipe': r.EquipeAtendimento || '-',
-        'Segmento': r.Segmento || '-',
-        'Data Importação': r.DataBaixa ? formatarData(extrairData(r.DataBaixa)) : '-',
-        'Documentação': r.Documentacao || '-',
-        'Status DOC': r.Documentacao === 'Recebida' ? 'Recebida' : 'Pendente'
+        'Responsavel': r.UsuarioResponsavel || '-',
+        'Status DOC': r.Documentacao === 'Recebida' ? 'Recebida' : 'Pendente',
+        'DOC Pendente': r.DocumentacaoPendente || '-',
+        'Data Comentário Operação': r.DataComentarioOperacao || '-',
+        'AÇÃO GERENTE': r.AcaoGerente || '-',
+        'Data Comentário Gerência': r.DataComentarioGerencia || '-',
+        'StatusSysAnalise': r.StatusSysAnalise || '-',
+        'IcmsLiberado': r.IcmsLiberado || '-',
+        'Coordenação': r.Coordenacao || '-'
     }));
     
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -410,7 +420,7 @@ function exportToExcel() {
     ws['!cols'] = colWidths;
     
     const wb = XLSX.utils.book_new();
-    const sheetName = `Pendencias_${currentFilterType}_${new Date().toISOString().slice(0,19)}`;
+    const sheetName = `Pendencias`;
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
     
     XLSX.writeFile(wb, `pendencias_${currentFilterType}_${currentFilterDate ? formatarData(currentFilterDate) : 'inicio'}.xlsx`);
@@ -675,7 +685,7 @@ function criarBloco(nomeGrupo, dados, dias) {
                 const tarefas = {};
 
                 base.forEach(r => {
-                    const chave = r.Titulo || 'Outros';
+                    const chave = r.Tarefa || 'Outros';
                     if (!tarefas[chave]) tarefas[chave] = [];
                     tarefas[chave].push(r);
                 });
@@ -685,7 +695,14 @@ function criarBloco(nomeGrupo, dados, dias) {
                 Object.keys(tarefas).forEach(tarefa => {
                     const baseTarefa = tarefas[tarefa];
 
-                    const linhaTarefa = criarLinha(`+ ${tarefa}`, calcularEvolucao(baseTarefa, dias, 'DataBaixa'), baseTarefa, dias);
+                    const linhaTarefa = criarLinha(
+                        `+ ${tarefa}`,
+                        calcularEvolucao(baseTarefa, dias, 'DataBaixa'),
+                        baseTarefa,
+                        dias,
+                        false,
+                        true
+                    );                    
                     linhaTarefa.classList.add('nivel2');
                     linhaTarefa.children[0].style.paddingLeft = '30px';
 
@@ -719,6 +736,42 @@ function criarBloco(nomeGrupo, dados, dias) {
                         ];
 
                         let refInterno = linhaTarefa;
+
+                        subLinhas.forEach(l => {
+                            l.classList.add('nivel3');
+                            l.children[0].style.paddingLeft = '50px';
+
+                            refInterno.parentNode.insertBefore(
+                                l,
+                                refInterno.nextSibling
+                            );
+
+                            refInterno = l;
+                        });
+
+                        // =========================
+                        // LINHA EM BRANCO NÍVEL 3
+                        // =========================
+                        const separatorNivel3 = document.createElement('tr');
+                        separatorNivel3.classList.add('nivel3');
+
+                        const tdSeparator3 = document.createElement('td');
+
+                        tdSeparator3.setAttribute(
+                            'colspan',
+                            dias.length + 2
+                        );
+
+                        tdSeparator3.style.height = '10px';
+                        tdSeparator3.style.backgroundColor = '#f8f9fc';
+                        tdSeparator3.style.border = 'none';
+
+                        separatorNivel3.appendChild(tdSeparator3);
+
+                        refInterno.parentNode.insertBefore(
+                            separatorNivel3,
+                            refInterno.nextSibling
+                        );
 
                         subLinhas.forEach(l => {
                             l.classList.add('nivel3');
